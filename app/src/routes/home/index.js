@@ -7,8 +7,9 @@ const router = express.Router();
 const ctrl = require("./home.ctrl")
 
 // render경로
-router.get("/", ctrl.home)
-router.get("/login", ctrl.login)
+router.get("/", ctrl.view.home)
+router.get("/login", ctrl.view.login)
+router.post("/login", ctrl.process.login)
 
 // router를 외부로 내보내는 명령
 module.exports = router;
