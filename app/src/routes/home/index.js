@@ -9,6 +9,7 @@ const ctrl = require("./home.ctrl")
 // render경로
 router.get("/", ctrl.view.home)
 router.get("/login", ctrl.view.login)
+router.get("/register", ctrl.view.register)
 router.post("/login", ctrl.process.login)
 
 // router를 외부로 내보내는 명령
