@@ -1,5 +1,6 @@
 "use strict";
 
+const { response } = require("express");
 const User = require("../../models/User")
 
 const view = {
@@ -48,6 +49,15 @@ const process = {
         // response.msg = "로그인에 실패하였습니다.";
         // return res.json(response);      
     },
+
+    register: (req, res) => {
+        const user = new User(req.body)
+        const response = user.register()
+        console.log(response)
+        return res.json(response)
+    }
+
+    
 };
 
 // json 형태로 내보내는데 key값만 입력하면 value값은 key와 똑같은 값으로 입력된다.

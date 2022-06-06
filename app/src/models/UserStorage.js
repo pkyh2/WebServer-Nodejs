@@ -31,6 +31,15 @@ class UserStorage{
         return userInfo
     }
 
+    static save(userInfo) {
+        const users = this.#users;
+        users.id.push(userInfo.id)
+        users.name.push(userInfo.name)
+        users.psword.push(userInfo.psword)
+        // 메서드에서 리턴값을 내보내니까 함수에서도 리턴값을 받는 변수를 생성한다.
+        return {success: true}
+    }
+
 }
 
 module.exports = UserStorage;
