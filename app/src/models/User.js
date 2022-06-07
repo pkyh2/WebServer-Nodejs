@@ -7,10 +7,11 @@ class User {
         this.body = body
     }
 
-    login() {
+    async login() {
         const client = this.body
         // UserStorage의 id값만 가져와야 하니까
-        const a = UserStorage.getUserInfo(client.id);
+        
+        const a = await UserStorage.getUserInfo(client.id);
         if (a.id) {
             if (a.id === client.id && a.psword === client.psword) {
                 return { success: true }

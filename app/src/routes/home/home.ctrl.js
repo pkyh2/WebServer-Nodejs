@@ -20,13 +20,12 @@ const view = {
 
 
 const process = {
-    login: (req, res) => {
+    login: async (req, res) => {
         // const id = req.body.id,
         //     psword = req.body.psword;
 
         const user = new User(req.body)
-        const response = user.login()
-        console.log(response)
+        const response = await user.login()
         return res.json(response)
 
         // // 로그인 검증이니까 인자값으로 "id", "psword" 가 꼭 필요!
