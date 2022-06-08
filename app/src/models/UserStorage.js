@@ -17,33 +17,52 @@ class UserStorage{
         return userInfo;
     }
 
-    static getUsers(...fields) {
-        // const users = this.#users
-        const newUsers = fields.reduce((newUsers, field) => {
-            if (users.hasOwnProperty(field)) {
-                newUsers[field] = users[field];
-            }
-            return newUsers;
-        }, {})
+    static #getUsers(data, isAll, fields){
+      const users = JSON.parse(data)
+      if (isAll) return users;
+      
+      const newUsers = fields.reduce((newUsers, field) => {
+        if (users.hasOwnProperty(field)) {
+            newUsers[field] = users[field];
+        }
         return newUsers;
+      }, {})
+      return newUsers;
+    }
+
+    static getUsers(isAll, ...fields) {
+        return fs
+            .readFile("./src/databases/users.json")
+            .then((data) => {
+                return this.#getUsers(data, isAll, fields);
+        })
+            .catch(console.error);
     }
 
     static getUserInfo(id) {
         return fs
             .readFile("./src/databases/users.json")
             .then((data) => {
-                return this.#getUserInfo(data, id)
+                return this.#getUserInfo(data, id);
         })
             .catch(console.error);
         
     }
 
-    static save(userInfo) {
-        // const users = this.#users;
-        users.id.push(userInfo.id)
-        users.name.push(userInfo.name)
-        users.psword.push(userInfo.psword)
-        // 메서드에서 리턴값을 내보내니까 함수에서도 리턴값을 받는 변수를 생성한다.
+    static async save(userInfo) {
+        const users = await this.getUsers(true) //인자를 true로 줘서 모든 값을 다 받아오겠다는 의미
+        // 입력받은 전체 데이터를 그대로 json파일에 write하니까 다 변경된다.
+        // 따라서 새로 입력받은 정보만 추가할수 있게 한다.
+        
+        if (users.id.includes(userInfo.id)) {
+          throw "이미 존재하는 아이디 입니다."
+        }
+        users.id.push(userInfo.id);
+        users.name.push(userInfo.name);
+        users.psword.push(userInfo.psword);
+
+        fs.writeFile("./src/databases/users.json", JSON.stringify(users))
+        
         return {success: true}
     }
 
